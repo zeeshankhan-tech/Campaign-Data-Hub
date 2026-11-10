@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: campaign-data-hub-db
+    environment:
+      POSTGRES_USER: cdh
+      POSTGRES_PASSWORD: cdh
+      POSTGRES_DB: campaign_data_hub
+    ports:
+      - "5432:5432"
+    volumes:
+      - cdh_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cdh -d campaign_data_hub"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  cdh_pgdata:
